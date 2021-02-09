@@ -1,0 +1,31 @@
+.header{
+    background-color:#1f1d1d;
+    color: white;
+    height:100%;
+}
+.nav-link{
+    color:#c1c1c1;
+    transition:ease 0.4s;
+}
+.nav-link:hover{
+    color:white;
+    background-color:grey;
+}
+.cat{
+    color:grey;
+    font-size: 20px;
+    font-family: Verdana;
+}
+.hr-cat{
+    background-color: #d0c7c7;
+}
+.post{
+    transition: transform .2s; /* Animation */
+}
+.post:hover{
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+
+}
+body{
+    background-color: #333333;
+}

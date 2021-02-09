@@ -1,0 +1,30 @@
+
+{% extends 'post/index.html.twig' %}
+
+ {% block menu %}
+     <div class="row no-gutters">
+         <div class="col-sm-2 text-center justify-content-center p-0" >
+             <nav class=" d-flex flex-column header   ">
+                 <a class="navbar-brand mt-5"><h1> Blogspot</h1></a>
+                 <label class="mt-5"><h4>Categorias:</h4></label>
+                 <ul class="nav flex-column justify-content-center mt-2 text-center navbar-light ">
+
+                     <li class="nav-item ml-0">
+                         <a class="nav-link active" href="#">Filmes</a>
+                     </li>
+                     <li class="nav-item ml-0">
+                         <a class="nav-link active" href="#">Series</a>
+                     </li>
+                     <li class="nav-item ml-0">
+                         <a class="nav-link active" href="#">Documentarios</a>
+                     </li>
+                     <li class="nav-item ml-0">
+                         <a class="nav-link active" href="#">Musica</a>
+                     </li>
+                     <li class="mt-5">
+                         <a class="nav-link" href="/lista_categoria" >Categorias </a>
+                     </li>
+                 </ul>
+             </nav>
+         </div>
+ {% endblock %}
