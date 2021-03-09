@@ -14,10 +14,10 @@ if (categoria){
 const post=document.getElementById('post');
 if (post){
     post.addEventListener('click',e=>{
-        if (e.target.className==='btn btn-danger delete'){
+        if (e.target.className==='btn btn-danger delete post'){
             if (confirm("Tem certeza")){
                 const id=e.target.getAttribute('data-id');
-                fetch(`/delete/${id}`,{
+                fetch(`delete/${id}`,{
                     method:'DELETE'
                 }).then(res=>window.location.reload())
             }

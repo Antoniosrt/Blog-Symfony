@@ -16,13 +16,13 @@ class CategoriasController extends AbstractController
     /**
      * @Route("/categoria/newCategoria", name="categoria")
      */
-    public function index(Request $request,EntityManagerInterface $em): Response
+    public function index(Request $request,EntityManagerInterface $em, CategoriasRepository $categoriasRepository): Response
     {
         $categoria=new Categorias();
         $cadastro=$this->createForm(CadastroCategoriaType::class,$categoria);
 
             $cadastro->handleRequest($request);
-
+        $categorias=$categoriasRepository->findAll();
         if ($cadastro->isSubmitted() && $cadastro->isValid()){
             $em->persist($categoria);
             $em->flush();
@@ -30,7 +30,8 @@ class CategoriasController extends AbstractController
         }
 
         return $this->render('categorias/index.html.twig', [
-            'form_cat'=>$cadastro->createView()
+            'form_cat'=>$cadastro->createView(),
+            'categorias'=>$categorias
         ]);
     }
     /**
@@ -40,6 +41,14 @@ class CategoriasController extends AbstractController
     {
         $categoria=$categoriasRepository->findAll();
         return $this->render('categorias/list.html.twig',[
+            'categorias'=>$categoria
+        ]);
+    }
+
+    public function menu(CategoriasRepository $categoriasRepository)
+    {
+        $categoria=$categoriasRepository->findAll();
+        return $this->render('base.html.twig',[
             'categorias'=>$categoria
         ]);
     }

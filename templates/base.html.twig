@@ -17,10 +17,46 @@
     <body>
     <div class="container-fluid p-0">
 
+        <div class="container-fluid  m-0 p-0 ">
+            <div class="row no-gutters">
+                <div class="col-sm-2 text-center justify-content-center p-0" >
+                    <nav class=" d-flex flex-column header   ">
+                        <a class="navbar-brand mt-5"><h1> Blogspot</h1></a>
+                        <label class="mt-5"><h4>Categorias:</h4></label>
+
+                        <ul class="nav flex-column justify-content-center mt-2 text-center navbar-light ">
+                            <li class="nav-item ml-0">
+                                <a class="nav-link active" href="/">Inicio</a>
+                            </li>
+
+                            {% for categoria in categorias  %}
+                                <li class="nav-item ml-0"> <a class="nav-link active" href="{{ categoria.id }}">{{ categoria.nome }}</a>
+                                </li>
+                            {% endfor %}
+                            <label class="mt-3"><h4>Gerenciamento:</h4></label>
+                            <li class="mt-0">
+                                <a class="nav-link" href="/categoria/lista_categoria" >Categorias </a>
+                            </li>
+                            <li class="mt-1">
+                                <a class="nav-link" href="/categoria/newCategoria" >Adicionar Categorias </a>
+                            </li>
+                            <li class="mt-1">
+                                <a class="nav-link" href="/post/table" >Posts </a>
+                            </li>
+                            <li class="mt-1">
+                                <a class="nav-link" href="/post/post_create" >Adicionar Posts </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-sm-9">
+
+
         {% block body %}
-
-
         {% endblock %}
+            </div>
+        </div>
     </div>
         <script src="{{ asset('js/main.js')}}"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

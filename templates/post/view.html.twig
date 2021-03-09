@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <div class="text-white text-center mt-4 mb-3">
+        <span class="h3">{{ posts.title }}</span>
+        <br>
+        <span class="text-muted ">
+            {{ posts.cat }}
+        </span>
+    </div>
+<div class="w-auto justify-content-center text-center" >
+    <img class="mx-auto w-auto" height="200px" src="/images/{{ posts.imagem }}">
+
+</div>
+    <div class="text-justify mx-auto col-sm-5 mt-5">
+        <span class="text-white ">{{ posts.descricao }}</span>
+    </div>
+    </div>
+    </div>
+{% endblock %}

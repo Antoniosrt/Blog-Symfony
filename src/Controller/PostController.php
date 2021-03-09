@@ -22,7 +22,7 @@ class PostController extends AbstractController
     /**
      * @Route("/post/post_create", name="post_create",methods={"POST","GET"})
      */
-    public function index(Request $request,EntityManagerInterface $em,SluggerInterface $slugger): Response
+    public function index(Request $request,EntityManagerInterface $em,SluggerInterface $slugger,CategoriasRepository $categoriasRepository): Response
     {
         $post=new Post();
         $form=$this->createForm(CadastroPostType::class,$post);
@@ -47,9 +47,10 @@ class PostController extends AbstractController
         if ($form->isSubmitted() && !$form->isValid()) {
             throw new HttpException(Codes::HTTP_BAD_REQUEST);
         }
-
+        $categoria=$categoriasRepository->findAll();
         return $this->render('post/index.html.twig', [
-            'form_post' => $form->createView()
+            'form_post' => $form->createView(),
+            'categorias'=>$categoria
         ]);
     }
 
@@ -57,7 +58,7 @@ class PostController extends AbstractController
      *
      * @Route ("/post/edit/{id}")
      */
-    public function edit($id,Request $request,EntityManagerInterface $em,SluggerInterface $slugger, PostRepository $postRepository) : Response
+    public function edit($id,Request $request,EntityManagerInterface $em,SluggerInterface $slugger,CategoriasRepository $categoriasRepository, PostRepository $postRepository) : Response
     {
 
         $post = $postRepository->find($id);
@@ -86,22 +87,23 @@ class PostController extends AbstractController
         if ($form->isSubmitted() && !$form->isValid()) {
             throw new HttpException(Codes::HTTP_BAD_REQUEST);
         }
-
+        $categoria=$categoriasRepository->findAll();
         return $this->render('post/edit.html.twig', [
-            'form_post' => $form->createView()
+            'form_post' => $form->createView(),
+            'categorias'=>$categoria
         ]);
     }
     /**
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @Route("/delete/{id}",methods={"DELETE"})
+     * @Route("post/delete/{id}",methods={"DELETE","GET"})
      */
     public function delete(Request $request,EntityManagerInterface $em, PostRepository $postRepository,$id) {
+
+
         $post=$postRepository->find($id);
         $em->remove($post);
         $em->flush();
         $response=new Response();
-        $response->send();
+        $response->send(true);
     }
 
     /**
@@ -110,8 +112,50 @@ class PostController extends AbstractController
     public function list(PostRepository $postRepository, CategoriasRepository $categoriasRepository)
     {
         $post=$postRepository->findAll();
+        $categoria=$categoriasRepository->findAll();
         return $this->render('blog/blog.html.twig',[
-            'posts'=>$post
+            'posts'=>$post,
+            'categorias'=>$categoria
+        ]);
+    }
+
+    /**
+     * @return Response
+     * @Route("/{id}")
+     */
+    public function verCategorias(PostRepository $postRepository, CategoriasRepository $categoriasRepository,$id){
+          /*  $em=$this->getDoctrine()->getManager();
+            $query=$em->createQuery(
+                'SELECT nome FROM post WHERE cat_id = :id '
+            )->setParameter('*',$id);
+        $products = $query->getResult();
+        */
+        $categoria=$categoriasRepository->findAll();
+        $catnome=$categoriasRepository->find($id);
+        $repository = $this->getDoctrine()
+            ->getRepository('App:Post');
+
+        $query = $repository->createQueryBuilder('post')
+            ->where('post.cat = :cat')
+            ->setParameter('cat', $id)
+            ->getQuery();
+        $post = $query->getResult();
+        return $this->render('blog/blogfilter.html.twig',[
+            'posts'=>$post,
+            'categorias'=>$categoria,
+            'catnome'=>$catnome
+        ]);
+    }
+    /**
+     * @Route("/post/view/{id}",name="viewpost")
+     */
+    public function viewpost(PostRepository $postRepository, CategoriasRepository $categoriasRepository,$id)
+    {
+        $post=$postRepository->find($id);
+        $categoria=$categoriasRepository->findAll();
+        return $this->render('post/view.html.twig',[
+            'posts'=>$post,
+            'categorias'=>$categoria
         ]);
     }
 
@@ -120,11 +164,13 @@ class PostController extends AbstractController
      * @return Response
      * @Route ("/post/table",name="table")
      */
-    public function table(PostRepository $postRepository): Response
+    public function table(PostRepository $postRepository,CategoriasRepository  $categoriasRepository): Response
     {
         $post=$postRepository->findAll();
+        $categoria=$categoriasRepository->findAll();
         return $this->render('post/table.html.twig',[
-            'posts'=>$post
+            'posts'=>$post,
+            'categorias'=>$categoria
         ]);
     }
 
